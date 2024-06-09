@@ -7,8 +7,10 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip
+
+# Install any needed packages specified in requirements.txt with increased timeout
+RUN pip install --no-cache-dir --default-timeout=1000 -r requirements.txt
 
 # Install Chromium, ChromeDriver, and other dependencies
 RUN apt-get update && apt-get install -y \
@@ -17,6 +19,25 @@ RUN apt-get update && apt-get install -y \
     xvfb \
     libxi6 \
     libgconf-2-4 \
+    fonts-liberation \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libatspi2.0-0 \
+    libcairo2 \
+    libcups2 \
+    libcurl3-gnutls \
+    libgbm1 \
+    libgtk-3-0 \
+    libnspr4 \
+    libnss3 \
+    libpango-1.0-0 \
+    libu2f-udev \
+    libvulkan1 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxkbcommon0 \
+    xdg-utils \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
@@ -37,4 +58,6 @@ EXPOSE 8080
 ENV NAME World
 
 # Run the script when the container launches
+CMD ["python", "image_scraper.py"]
+
 CMD ["python", "augment.py"]

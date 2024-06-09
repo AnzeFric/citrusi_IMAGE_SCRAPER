@@ -26,7 +26,7 @@ image_url = image_element.get_attribute("src")
 create_directory("images")
 
 i = 0
-while(True and i < 100000):
+while(True and i < 10):
     # Download the image
     image_filename = "images/" + str(i) + ".jpg"
     driver.get(image_url)
