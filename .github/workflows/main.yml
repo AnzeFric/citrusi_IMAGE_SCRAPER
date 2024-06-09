@@ -22,11 +22,11 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/citrusi_2fa:${{ github.sha }} .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/citrusi_image_scraper:${{ github.sha }} .
       
     - name: Push Docker image to Docker Hub
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/citrusi_2fa:${{ github.sha }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/citrusi_image_scraper:${{ github.sha }}
 
     - name: Deploy to Server
       uses: appleboy/ssh-action@master
@@ -35,7 +35,7 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/citrusi_2fa:${{ github.sha }}
-          docker stop citrusi_2fa || true
-          docker rm citrusi_2fa || true
-          docker run --name citrusi_2fa -d -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/citrusi_2fa:${{ github.sha }}
+          docker pull ${{ secrets.DOCKER_USERNAME }}/citrusi_image_scraper:${{ github.sha }}
+          docker stop citrusi_image_scraper || true
+          docker rm citrusi_image_scraper || true
+          docker run --name citrusi_image_scraper -d -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/citrusi_image_scraper:${{ github.sha }}
