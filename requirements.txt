@@ -1,0 +1,6 @@
+tensorflow
+pandas
+numpy
+Pillow
+scikit-learn
+selenium

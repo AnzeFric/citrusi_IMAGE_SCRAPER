@@ -1,0 +1,40 @@
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Chromium, ChromeDriver, and other dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    xvfb \
+    libxi6 \
+    libgconf-2-4 \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Download and install ChromeDriver
+RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/88.0.4324.96/chromedriver_linux64.zip \
+    && unzip /tmp/chromedriver.zip -d /usr/local/bin/ \
+    && rm /tmp/chromedriver.zip
+
+# Download and install Google Chrome
+RUN wget -O /tmp/google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && apt-get install -y /tmp/google-chrome.deb \
+    && rm /tmp/google-chrome.deb
+
+# Expose port (optional if your application serves HTTP requests)
+EXPOSE 8080
+
+# Define environment variable
+ENV NAME World
+
+# Run the script when the container launches
+CMD ["python", "augment.py"]
