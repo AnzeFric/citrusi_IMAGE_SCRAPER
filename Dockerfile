@@ -58,5 +58,4 @@ EXPOSE 8080
 ENV NAME World
 
 # Run the script when the container launches
-CMD ["python", "image_scraper.py"]
-CMD ["python", "augment.py"]
+CMD ["python", "image_scraper.py", "&&", "python", "augment.py"]
